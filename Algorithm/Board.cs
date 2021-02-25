@@ -54,7 +54,6 @@ namespace Algorithm
         public MyLinkedListNode<T> Prev;
     }
 
-    
     class MyLinkedList<T>
     {
         public MyLinkedListNode<T> Head = null;        // 첫번째
@@ -107,21 +106,63 @@ namespace Algorithm
 
     class Board
     {
-        public int[] _data = new int[25];                       // 배열
-        //public List<int> _data2 = new List<int>();              // 동적 배열, C++에서 vector
-        public MyList<int> _data2 = new MyList<int>();          
-        //public LinkedList<int> _data3 = new LinkedList<int>();  // 연결 리스트
-        public MyLinkedList<int> _data3 = new MyLinkedList<int>();  // 연결 리스트
+        public TileType[,] _tile;                       // 배열
+        public int _size;
+        const char CIRCLE = '\u25cf';
 
-        public void Initialize()
+        public enum TileType
         {
-            _data3.AddLast(101);
-            _data3.AddLast(102);
-            MyLinkedListNode<int> node = _data3.AddLast(103);
-            _data3.AddLast(104);
-            _data3.AddLast(105);
+            Empty,
+            Wall,
+        }
 
-            _data3.Remove(node);
+        public void Initialize(int size)
+        {
+            _tile = new TileType[size, size];
+            _size = size;
+
+            for (int y = 0; y < 25; y++)
+            {
+                for (int x = 0; x < 25; x++)
+                {
+                    if (x == 0 || x == _size - 1 || y == 0 || y == _size - 1)
+                        _tile[y, x] = TileType.Wall;
+                    else
+                        _tile[y, x] = TileType.Empty;
+                }
+            }
+        }
+
+        public void Render()
+        {
+            ConsoleColor prevColor = Console.ForegroundColor;
+
+            for (int y = 0; y < 25; y++)
+            {
+                for (int x = 0; x < 25; x++)
+                {
+                    Console.ForegroundColor = GetTileColor(_tile[y, x]);
+                    Console.Write(CIRCLE);
+                }
+                Console.WriteLine();
+            }
+
+            Console.ForegroundColor = prevColor;
+        }
+
+        ConsoleColor GetTileColor(TileType type)
+        {
+            switch(type)
+            {
+                case TileType.Empty:
+                    return ConsoleColor.Green;
+
+                case TileType.Wall:
+                    return ConsoleColor.Red;
+
+                default:
+                    return ConsoleColor.Green;
+            }
         }
     }
 }
