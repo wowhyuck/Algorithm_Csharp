@@ -9,7 +9,7 @@ namespace Algorithm
             Board board = new Board();
             Player player = new Player();
             board.Initialize(25, player);
-            player.Initialize(1, 1, board.Size-2, board.Size-2, board);
+            player.Initialize(1, 1, board);
 
             Console.CursorVisible = false;
             const int WAIT_TICK = 1000 / 30;
